@@ -160,6 +160,7 @@ main(int argc, char *argv[]) {
         }
     }
 
+    // Prueba push
     fputc('\n', stderr);
     fprintf(stderr, "Exiting %s ...\n", progname);
     exit(EXIT_SUCCESS);
