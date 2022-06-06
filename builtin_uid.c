@@ -1,5 +1,3 @@
-#include <stdlib.h>
-#include <string.h>
 #include "minish.h"
 
 int builtin_uid (int argc, char ** argv){
