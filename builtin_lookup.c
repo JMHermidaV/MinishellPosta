@@ -12,6 +12,10 @@
 #define HELP_STATUS  "status - muestra status de retorno de ultimo comando ejecutado"
 #define HELP_UID     "uid - muestra nombre y número de usuario dueño del minish"
 
+struct builtin_struct builtin_arr[] = {
+    {"cd", builtin_cd, HELP_CD},
+    {NULL, NULL, NULL}
+};
 
 struct builtin_struct *builtin_lookup(char *cmd){
     struct builtin_struct *funcion;
@@ -26,7 +30,7 @@ struct builtin_struct *builtin_lookup(char *cmd){
     }
     return funcion;
 }
-
+/*
 struct builtin_struct builtin_arr[] = {
     {"exit", builtin_exit, HELP_EXIT},
     {"help", builtin_help, HELP_HELP},
@@ -39,5 +43,8 @@ struct builtin_struct builtin_arr[] = {
     {"uid", builtin_uid, HELP_UID},
     {"cd", builtin_cd, HELP_CD},
     {NULL, NULL, NULL}
-    }
+};
+*/
+
+
 

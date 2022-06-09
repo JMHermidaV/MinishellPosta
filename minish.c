@@ -8,8 +8,13 @@
 #include <sys/wait.h>
 #include <signal.h>
 #include <ctype.h>
+#include <limits.h>
+
+#include "minish.h"
+
 #define MAXLINE 1024
 
+char cwd[PATH_MAX];
 
 void devolver_memoria(char **argv){
     for (int i=0; argv[i]!=NULL;i++){
@@ -20,7 +25,8 @@ void devolver_memoria(char **argv){
 
 void
 prompt(char *ps) {
-    fprintf(stderr, "(%s) ^D to exit > ", ps);
+
+    fprintf(stderr, "(%s) %s^D to exit > ", ps,  getcwd(cwd, sizeof(cwd)));
 }
 
 void
@@ -31,6 +37,7 @@ sigint_handler(int signum) {
 int
 main(int argc, char *argv[]) {
     char **argv2= malloc(sizeof(char*)*MAXLINE);
+    int argc2 = 0;
     char line[MAXLINE];
     char *progname = argv[0];
     struct sigaction oldact, newact;
@@ -38,6 +45,7 @@ main(int argc, char *argv[]) {
     sigaction(SIGINT, NULL, &newact);          
     newact.sa_handler = sigint_handler;
     sigaction(SIGINT, &newact, NULL);          
+
 
     for (;;) {
         prompt(progname);
@@ -51,8 +59,12 @@ main(int argc, char *argv[]) {
         }
 
         fprintf(stderr, "Will execute command %s", line);
-        
-        if (linea2argv(line,MAXLINE,argv2) > 0) { 
+        argc2 = linea2argv(line, MAXLINE, argv2); 
+        if (argc2 > 0) { 
+            // Ejecuta el comando
+            ejecutar(argc2, argv2);
+
+            /*
             pid_t pid;                         
             int wait_status;                   
             fprintf(stderr, "Will fork %s command\n",argv2[0]);
@@ -74,6 +86,7 @@ main(int argc, char *argv[]) {
                 sigaction(SIGINT, &oldact, NULL);   
                 fprintf(stderr, "Ended %s child process\n",argv2[0]);
             }
+            */
         }
     }
 

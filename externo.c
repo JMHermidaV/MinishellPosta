@@ -1,7 +1,11 @@
 #include <errno.h>
 #include <error.h>
 #include <sys/wait.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include "minish.h"
+
 
 int externo (int argc, char ** argv){
     struct sigaction oldact, newact;
