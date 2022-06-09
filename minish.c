@@ -13,7 +13,8 @@
 #include "minish.h"
 
 #define MAXLINE 1024
-
+#define GREEN "\033[0;32m"
+#define WHITE "\033[0m"
 char cwd[PATH_MAX];
 
 void devolver_memoria(char **argv){
@@ -26,7 +27,7 @@ void devolver_memoria(char **argv){
 void
 prompt(char *ps) {
 
-    fprintf(stderr, "(%s) %s^D to exit > ", ps,  getcwd(cwd, sizeof(cwd)));
+    fprintf(stderr, "(%s) %s%s%s ^D to exit > ", ps, GREEN ,getcwd(cwd, sizeof(cwd)), WHITE);
 }
 
 void
