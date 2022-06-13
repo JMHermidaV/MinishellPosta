@@ -14,6 +14,9 @@
 
 struct builtin_struct builtin_arr[] = {
     {"cd", builtin_cd, HELP_CD},
+    {"help", builtin_help, HELP_HELP},
+    {"getenv", builtin_getenv, HELP_GETENV},
+    {"dir", builtin_dir, HELP_DIR},
     {NULL, NULL, NULL}
 };
 

@@ -8,7 +8,7 @@ int ejecutar(int argc, char **argv){
     struct builtin_struct *bstruct;
     int retorno;
     bstruct = builtin_lookup(argv[0]);              //Llamo a Lookup 
-    if(bstruct==NULL){                              //Si no es un builtin
+    if(bstruct == NULL){                              //Si no es un builtin
         retorno = externo(argc,argv);               //Ejecuto externo
     }
     else{                                           //Si es un builtin
