@@ -7,8 +7,6 @@
 
 int builtin_setenv(int argc, char **argv){
 
-    int i;
-
     if(argc == 3){
         return(setenv(argv[1], argv[2], 1));
     }
