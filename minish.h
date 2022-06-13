@@ -1,3 +1,14 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+#include <error.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <signal.h>
+#include <ctype.h>
+#include <limits.h>
 #include <pwd.h>
 #include <limits.h>
 #include <grp.h>
@@ -5,7 +16,8 @@
 #define MAXCWD 1024         // tamaño máximo para alojar el pathname completo del directorio corriente
 #define MAXWORDS 256        // cantidad máxima de palabras en la línea
 #define HISTORY_FILE	".minish_history"   // nombre del archivo que almacena historia de comandos
-
+#define GREEN "\033[0;32m"
+#define WHITE "\033[0m"
 // Definición de Estructuras
 
 struct builtin_struct {         // struct con información de los builtins

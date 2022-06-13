@@ -1,20 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
-#include <error.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <signal.h>
-#include <ctype.h>
-#include <limits.h>
-
 #include "minish.h"
 
-#define MAXLINE 1024
-#define GREEN "\033[0;32m"
-#define WHITE "\033[0m"
 char cwd[PATH_MAX];
 
 void devolver_memoria(char **argv){
