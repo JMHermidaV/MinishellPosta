@@ -11,6 +11,6 @@ if(argc ==1){
     }
     return 0; 
 }
-else{print("ERROR");}
+else{print("BUILTIN_GID ERROR");}
    
 }

@@ -12,7 +12,7 @@ int builtin_setenv(int argc, char **argv){
     }
 
     else{
-    fprintf(stderr, "ERROR al cambiar la variable: %s", argv[1]);
+    fprintf(stderr, "BUILTIN_SETENV ERROR: al cambiar la variable: %s", argv[1]);
        
         }
     return EXIT_SUCCESS;
