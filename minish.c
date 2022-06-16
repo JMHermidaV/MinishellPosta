@@ -1,6 +1,7 @@
 #include "minish.h"
 
 char cwd[PATH_MAX];
+int globalstatret = 0;
 
 void devolver_memoria(char **argv){
     for (int i=0; argv[i]!=NULL;i++){
@@ -44,11 +45,11 @@ main(int argc, char *argv[]) {
             }
         }
 
-        fprintf(stderr, "Will execute command %s", line);
+        //fprintf(stderr, "Will execute command %s", line);
         argc2 = linea2argv(line, MAXLINE, argv2); 
         if (argc2 > 0) { 
             // Ejecuta el comando
-            ejecutar(argc2, argv2);
+            globalstatret=ejecutar(argc2, argv2);
 
             /*
             pid_t pid;                         
