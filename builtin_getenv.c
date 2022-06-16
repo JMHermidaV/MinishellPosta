@@ -18,7 +18,7 @@ int builtin_getenv(int argc, char **argv){
         // Buscamos en cada iteracion la variable de entorno
         
         if(getenv(argv[i]) != NULL){
-            fprintf(stderr, "%s: %s\n", argv[i], getenv(argv[i]));
+            printf("%s: %s\n", argv[i], getenv(argv[i]));
         } // En error, retorna NULL:
         else{
             fprintf(stderr, "ERROR: invalid variable name '%s'\n", argv[i]);
