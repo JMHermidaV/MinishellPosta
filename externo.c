@@ -20,7 +20,7 @@ int externo (int argc, char ** argv){
         newact.sa_handler = SIG_DFL;
         sigaction(SIGINT, &newact, NULL);   // reset SIGINT default for child
         execvp(argv[0],argv);    // if successful, child will go on with new executable
-        fprintf(stderr,"ERROR: execvp error. %s", argv[0]);
+        fprintf(stderr,"ERROR: execvp error. %s\n", argv[0]);
         return EXIT_FAILURE;
         //error(EXIT_FAILURE, errno, "execvp error. %s", argv[0]); // if exec not successful, just exit child
 
