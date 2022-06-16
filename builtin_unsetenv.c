@@ -6,5 +6,11 @@
 #include "minish.h"
 
 int builtin_unsetenv(int argc, char **argv){
-    return 0;
+    if (argc ==1){
+        fprintf(stderr, "%s\n", "ERROR: Not enough input arguments");
+    }
+
+    for (int i = 1; i<argc; i++){
+        unsetenv(argv[i]);
+    }
 }
