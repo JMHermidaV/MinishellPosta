@@ -22,7 +22,7 @@ int builtin_getenv(int argc, char **argv){
         } // En error, retorna NULL:
         else{
             fprintf(stderr, "BUILTIN_ GETENV ERROR: invalid variable name '%s'\n", argv[i]);
-            return -1;
+            return EXIT_FAILURE;
         }
     }
 
