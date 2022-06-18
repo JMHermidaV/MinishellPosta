@@ -20,6 +20,7 @@ struct builtin_struct builtin_arr[] = {
     {"status", builtin_status, HELP_STATUS},
     {"setenv", builtin_setenv, HELP_SETENV},
     {"unsetenv", builtin_unsetenv, HELP_UNSETENV},
+    {"pid", builtin_pid, HELP_PID},
     {NULL, NULL, NULL}
 };
 
