@@ -88,3 +88,4 @@ extern int ejecutar (int argc, char ** argv);
 extern int externo (int argc, char ** argv);
 extern int linea2argv(char *linea, int argc, char **argv);
 extern void bubblesort(char **arreglo);
+extern void devolver_memoria(char **array);

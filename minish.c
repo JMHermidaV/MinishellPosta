@@ -3,13 +3,6 @@
 char cwd[PATH_MAX];
 int globalstatret = 0;
 
-void devolver_memoria(char **argv){
-    for (int i=0; argv[i]!=NULL;i++){
-                free(argv[i]);
-                argv[i]=NULL;
-            }
-}
-
 void
 prompt(char *ps) {
 
