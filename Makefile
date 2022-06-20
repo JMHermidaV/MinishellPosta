@@ -26,4 +26,4 @@ builtin_pid.o: minish.h
 builtin_gid.o: minish.h
 builtin_dir.o: minish.h
 builtin_exit.o: minish.h
-bubblesort.: minish.h
+bubblesort.o: minish.h

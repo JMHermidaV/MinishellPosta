@@ -3,40 +3,172 @@
 #include <dirent.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <stdbool.h>
+#include <time.h>
 
 #include "minish.h"
 
+char permission_array[] = {'x', 'w', 'r'};
+char permisos[] = {'-', '-', '-', '-', '-', '-', '-', '-', '-'};
+DIR *d;
+char *path_directory;
+
+// Inprime los permisos del archivo
+int permissions(int n){
+    for(int i = 0; i < sizeof(n)*CHAR_BIT; i++){
+        int bit = (n >> i) & 1;
+        if(i < 9){
+            if(bit == 0){
+                permisos[i] = '-';
+            }
+            else permisos[i] = permission_array[i % 3];
+        }
+    }
+    for(int i = 8; i >= 0; i = i - 1){
+        printf("%c", permisos[i]);
+    }
+}
+
+
+int list(char *path, char *filter, char **names){
+    
+    d = opendir(path);
+    if(d){ // If is a directory:
+        int n;
+        for(n = 0; path[n] != '\0'; n++);
+        if(path[n-1] != '/'){
+            path = realloc(path, sizeof(char)*(n+1));
+            path[n] = '/';
+            path[n+1] = '\0';
+        }
+        path_directory = path;
+        struct dirent *dir;
+        int i = 0;
+        while((dir = readdir(d)) != NULL){
+
+            if(filter == NULL){
+                if(dir->d_name[0] != '.'){
+                    names[i] = dir->d_name;
+                    i++;
+                }
+            }
+            
+            else{
+                if(dir->d_name[0] != '.' && strstr(dir->d_name, filter) != NULL){
+                    names[i] = dir->d_name;
+                    i++;
+                }
+            }
+        }
+        names[i] = NULL;
+    }
+
+    else{
+        return -1;
+    }
+    return 0;
+}
+
 int builtin_dir(int argc, char **argv){
-    // Lista todos los archivos:
+    char **names;
+    names = malloc(sizeof(char *)*1000);
+
     if(argc == 1){
-        DIR *d;
+        if(list("./", NULL, names)){
+            return 1;
+        }
+    }
+    /*
+    if(argc == 1){
+        //DIR *d;
         int x;
         struct dirent *dir;
-        struct stat *fs;
-        fs = malloc(sizeof(struct stat*));
+        struct stat fs;
+        char time[100];
+        char buf[PATH_MAX]; // For real path
         d = opendir(".");
         if (d) {
             while((dir = readdir(d)) != NULL) {
-                x = stat("ejecutar.o", fs);
-                //x = stat(dir->d_name, fs);
+                //x = stat("ejecutar.o", fs);
+                //realpath(dir->d_name, buf);
+                //printf("%s", buf);
+
+                x = stat(dir->d_name, &fs);
+                //x = stat(buf, fs);
                 //printf("%s\n", dir->d_name);
                 if(x == -1){
                     // Error
-                    perror(errno);
                     return 8;
                 }
-                else{}
-                    //printf("%d - %s - %ld - %ld - %s \n",fs->st_mode, getpwuid(fs->st_uid)->pw_name, fs->st_ino, fs->st_ctime, dir->d_name);
+                else{
+                    permissions(fs.st_mode);
+                    //printf("\n");
+                    //printf("%d", fs.st_mode);
+                    // st_uid: user_id of owner
+                    // st_gid: group_id of owner
+                    //time = localtime(fs.st_mtim.tv_sec);
+                    strftime(time, sizeof(time), "%b %d %H:%M", localtime(&fs.st_mtim.tv_sec));
+                    printf("  %s  %s  %6ld", getpwuid(fs.st_uid)->pw_name, getgrgid(fs.st_gid)->gr_name, fs.st_size);
+                    printf("  %s", time);
+                    printf("  %s\n", dir->d_name);
                 }
             }
             closedir(d);
         }
+    return 0;
     }
+    */
 
     else if(argc == 2){
-        //listar(argv[1]);
+        if(list(argv[1], NULL, names) != 0){ // Si devuelve error, argv[1] es un texto filtro:
+            if(list("./", argv[1], names) != 0){
+                return 1;
+            }
+        }
     }
 
-    return 0;
+    else if(argc == 3){
+        if(list(argv[1], argv[2], names) != 0){
+            fprintf(stderr, "ERROR: when two arguments passed, the firts one must be a path to a directory");
+            return 1;
+        }
+    }
+
+    else {
+        fprintf(stderr, "ERROR: invalid number of arguments, type 'help dir' for more info.");
+        return 1;
+    }
+    bubblesort(names);
+    struct stat fs;
+    int x;
+    char *absolute_path;
+    absolute_path = malloc(sizeof(char)*100);
+    absolute_path = strdup(path_directory);
+    char time[100];
+    for(int i = 0; names[i] != NULL; i++){
+
+        strcat(absolute_path, names[i]);
+        x = stat(absolute_path, &fs);
+        absolute_path = strdup(path_directory);
+        if(x == -1){
+            return 1;
+        }
+
+        if(S_ISDIR(fs.st_mode) == 1){
+            printf("d");
+        }else{
+            printf("-");
+        }
+        permissions(fs.st_mode);
+        
+
+        strftime(time, sizeof(time), "%b %d %H:%M", localtime(&fs.st_mtim.tv_sec));
+        printf("  %ld", fs.st_nlink);
+        printf("  %15s  %15s  %6ld", getpwuid(fs.st_uid)->pw_name, getgrgid(fs.st_gid)->gr_name, fs.st_size);
+        printf("  %s", time);
+        printf("  %s\n", names[i]);
+    }
 }
+
+
 

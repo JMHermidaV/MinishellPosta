@@ -87,4 +87,4 @@ extern int builtin_unsetenv (int argc, char ** argv);
 extern int ejecutar (int argc, char ** argv);
 extern int externo (int argc, char ** argv);
 extern int linea2argv(char *linea, int argc, char **argv);
-extern int bubblesort(char arreglo[][MAXIMA_LONGITUD_CADENA], int longitud);
+extern int bubblesort(char **arreglo);
