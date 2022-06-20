@@ -18,6 +18,7 @@
 #define HISTORY_FILE	".minish_history"   // nombre del archivo que almacena historia de comandos
 #define GREEN "\033[0;32m"
 #define WHITE "\033[0m"
+#define MAXIMA_LONGITUD_CADENA 1000
 // Definición de Estructuras
 
 struct builtin_struct {         // struct con información de los builtins
@@ -86,3 +87,4 @@ extern int builtin_unsetenv (int argc, char ** argv);
 extern int ejecutar (int argc, char ** argv);
 extern int externo (int argc, char ** argv);
 extern int linea2argv(char *linea, int argc, char **argv);
+extern int bubblesort(char arreglo[][MAXIMA_LONGITUD_CADENA], int longitud);
