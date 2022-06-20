@@ -5,10 +5,10 @@
 int builtin_pid (int argc, char ** argv){
     if(argc ==1){
         printf("%d\n", getpid());
-        return 0; 
+        return EXIT_SUCCESS; 
     }
     else{
-        printf("BUILTIN_PID ERROR: pid does not take arguments\n");
-        return 1;
+        fprintf(stderr,"BUILTIN_PID ERROR: pid does not take arguments\n");
+        return EXIT_FAILURE;
     }
 }

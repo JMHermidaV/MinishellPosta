@@ -9,11 +9,11 @@ if(argc ==1){
     for(int i=0; i < ngroups; i++){
         printf("La ID del grupo secundario %d es: %d - Nombre del grupo: %s\n", i, grouplist[i],getgrgid(grouplist[i])->gr_name);
     }
-    return 0; 
+    return EXIT_SUCCESS; 
 }
 else{
-    printf("BUILTIN_GID ERROR");
-    return 1;
+    fprintf(stderr,"BUILTIN_GID ERROR: gid does not take arguments\n");
+    return EXIT_FAILURE;
 }
    
 }
