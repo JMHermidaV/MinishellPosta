@@ -11,7 +11,9 @@
 #define HELP_SETENV  "setenv var valor - agrega o cambia valor de variable de ambiente"
 #define HELP_STATUS  "status - muestra status de retorno de ultimo comando ejecutado"
 #define HELP_UID     "uid - muestra nombre y número de usuario dueño del minish"
-#define HELP_UNSETENV "unsetenv var [var...] - elimina las variables de ambiente "
+#define HELP_UNSETENV "unsetenv var [var...] - elimina las variables de ambiente"
+#define HELP_GID "gid - muestra el grupo principal y los grupos secundarios del usuario."
+
 struct builtin_struct builtin_arr[] = {
     {"cd", builtin_cd, HELP_CD},
     {"help", builtin_help, HELP_HELP},
@@ -21,6 +23,9 @@ struct builtin_struct builtin_arr[] = {
     {"setenv", builtin_setenv, HELP_SETENV},
     {"unsetenv", builtin_unsetenv, HELP_UNSETENV},
     {"pid", builtin_pid, HELP_PID},
+    {"uid", builtin_uid, HELP_UID},
+    {"gid", builtin_gid, HELP_GID},
+    {"exit", builtin_exit, HELP_EXIT},
     {NULL, NULL, NULL}
 };
 

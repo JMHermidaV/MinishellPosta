@@ -15,16 +15,16 @@ int linea2argv (char *linea, int argc, char **argv){
             ;
         }
     while(linea[i] != '\0'){
-        if (linea[i] == '"'){
+        if (linea[i] == '\''){
             i++;    //salteo la comilla de apertura
-            for(j = 0;  linea[i] != '"' && k<argc; i++,j++){
+            for(j = 0;  linea[i] != '\'' && k<argc; i++,j++){
                 word[j] = linea[i];
             }
             i++;    //salteo la comilla de cierre
         }
-        else if (linea[i] == "'" ){
+        else if (linea[i] == '\"' ){
             i++;    //salteo la comilla de apertura
-            for(j = 0; linea[i] != "'" && k<argc; i++,j++){
+            for(j = 0; linea[i] != '\"' && k<argc; i++,j++){
                 word[j] = linea[i];
             }
             i++;    //salteo la comilla de cierre

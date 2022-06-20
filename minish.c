@@ -13,7 +13,7 @@ void devolver_memoria(char **argv){
 void
 prompt(char *ps) {
 
-    fprintf(stderr, "(%s) %s%s%s ^D to exit > ", ps, GREEN ,getcwd(cwd, sizeof(cwd)), WHITE);
+    fprintf(stderr, "(%s) %s:%s%s%s ^D to exit > ", ps, getpwuid(geteuid())->pw_name, GREEN ,getcwd(cwd, sizeof(cwd)), WHITE);
 }
 
 void
