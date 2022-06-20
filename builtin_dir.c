@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <time.h>
 
+// LIBERAR MEMORIA
 #include "minish.h"
 
 char permission_array[] = {'x', 'w', 'r'};
@@ -14,8 +15,9 @@ DIR *d;
 char *path_directory;
 
 // Inprime los permisos del archivo
-int permissions(int n){
-    for(int i = 0; i < sizeof(n)*CHAR_BIT; i++){
+void permissions(int n){
+
+    for(unsigned int i = 0; i < sizeof(n)*CHAR_BIT; i++){
         int bit = (n >> i) & 1;
         if(i < 9){
             if(bit == 0){
@@ -78,46 +80,6 @@ int builtin_dir(int argc, char **argv){
             return 1;
         }
     }
-    /*
-    if(argc == 1){
-        //DIR *d;
-        int x;
-        struct dirent *dir;
-        struct stat fs;
-        char time[100];
-        char buf[PATH_MAX]; // For real path
-        d = opendir(".");
-        if (d) {
-            while((dir = readdir(d)) != NULL) {
-                //x = stat("ejecutar.o", fs);
-                //realpath(dir->d_name, buf);
-                //printf("%s", buf);
-
-                x = stat(dir->d_name, &fs);
-                //x = stat(buf, fs);
-                //printf("%s\n", dir->d_name);
-                if(x == -1){
-                    // Error
-                    return 8;
-                }
-                else{
-                    permissions(fs.st_mode);
-                    //printf("\n");
-                    //printf("%d", fs.st_mode);
-                    // st_uid: user_id of owner
-                    // st_gid: group_id of owner
-                    //time = localtime(fs.st_mtim.tv_sec);
-                    strftime(time, sizeof(time), "%b %d %H:%M", localtime(&fs.st_mtim.tv_sec));
-                    printf("  %s  %s  %6ld", getpwuid(fs.st_uid)->pw_name, getgrgid(fs.st_gid)->gr_name, fs.st_size);
-                    printf("  %s", time);
-                    printf("  %s\n", dir->d_name);
-                }
-            }
-            closedir(d);
-        }
-    return 0;
-    }
-    */
 
     else if(argc == 2){
         if(list(argv[1], NULL, names) != 0){ // Si devuelve error, argv[1] es un texto filtro:
@@ -129,20 +91,20 @@ int builtin_dir(int argc, char **argv){
 
     else if(argc == 3){
         if(list(argv[1], argv[2], names) != 0){
-            fprintf(stderr, "ERROR: when two arguments passed, the firts one must be a path to a directory");
+            fprintf(stderr, "ERROR: when two arguments passed, the firts one must be a path to a directory\n");
             return 1;
         }
     }
 
     else {
-        fprintf(stderr, "ERROR: invalid number of arguments, type 'help dir' for more info.");
+        fprintf(stderr, "ERROR: too many arguments, type 'help dir' for more info\n");
         return 1;
     }
     bubblesort(names);
     struct stat fs;
     int x;
     char *absolute_path;
-    absolute_path = malloc(sizeof(char)*100);
+    absolute_path = malloc(sizeof(char)*PATH_MAX);
     absolute_path = strdup(path_directory);
     char time[100];
     for(int i = 0; names[i] != NULL; i++){
@@ -151,7 +113,7 @@ int builtin_dir(int argc, char **argv){
         x = stat(absolute_path, &fs);
         absolute_path = strdup(path_directory);
         if(x == -1){
-            return 1;
+            return EXIT_FAILURE;
         }
 
         if(S_ISDIR(fs.st_mode) == 1){
@@ -168,6 +130,8 @@ int builtin_dir(int argc, char **argv){
         printf("  %s", time);
         printf("  %s\n", names[i]);
     }
+
+    return EXIT_SUCCESS;
 }
 
 
