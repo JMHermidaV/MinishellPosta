@@ -12,10 +12,15 @@
 #include <pwd.h>
 #include <limits.h>
 #include <grp.h>
+#include <dirent.h>
+#include <sys/stat.h>
+#include <stdbool.h>
+#include <time.h>
+#include <sys/mman.h>
 #define MAXLINE 1024        // tamaño máximo de la línea de entrada
 #define MAXCWD 1024         // tamaño máximo para alojar el pathname completo del directorio corriente
 #define MAXWORDS 256        // cantidad máxima de palabras en la línea
-#define HISTORY_FILE	".minish_history"   // nombre del archivo que almacena historia de comandos
+#define HISTORY_FILE	"/.minish_history"   // nombre del archivo que almacena historia de comandos
 #define GREEN "\033[0;32m"
 #define WHITE "\033[0m"
 #define MAXIMA_LONGITUD_CADENA 1000
@@ -34,6 +39,11 @@ extern int globalstatret;	// guarda status del ultimo comando
 
 extern struct builtin_struct builtin_arr[];
 
+extern char previous_commands[][MAXLINE];
+extern int cmd_pos;
+
+extern FILE *history_fp;  
+           
 /*
     builtin_arr es una lista de los builtins, que se recorrerá en forma lineal.
     Podría usarse una estructura que mejorara la velocidad de búsqueda, pero
@@ -89,3 +99,4 @@ extern int externo (int argc, char ** argv);
 extern int linea2argv(char *linea, int argc, char **argv);
 extern void bubblesort(char **arreglo);
 extern void devolver_memoria(char **array);
+extern int isint(char *array);

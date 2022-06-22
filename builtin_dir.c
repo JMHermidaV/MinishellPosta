@@ -1,11 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <dirent.h>
-#include <string.h>
-#include <sys/stat.h>
-#include <stdbool.h>
-#include <time.h>
-
 // LIBERAR MEMORIA
 #include "minish.h"
 
@@ -73,7 +65,7 @@ int list(char *path, char *filter, char **names){
 
 int builtin_dir(int argc, char **argv){
     char **names;
-    names = malloc(sizeof(char *)*1000);
+    names = malloc(sizeof(char *)*MAXLINE);
 
     if(argc == 1){
         if(list("./", NULL, names)){
