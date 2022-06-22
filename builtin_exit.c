@@ -1,14 +1,10 @@
 #include "minish.h"
-int isint(char *argv){
-    for(int i = 0; argv[i]!='\0';i++){
-        if (!isdigit(argv[i])){
-            return 0;
-        }
-    }
-    return 1;
-}
-
 int builtin_exit (int argc, char ** argv){
+    for(int i = 0;i<cmd_pos;i++){
+        fprintf(history_fp,previous_commands[i]);
+        //printf("%s - %s",history_fp[0],previous_commands[i]);
+    }
+    fclose(history_fp);
     if (argc == 1) {
         devolver_memoria(argv);
         exit(globalstatret);

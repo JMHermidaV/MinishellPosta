@@ -26,6 +26,7 @@ struct builtin_struct builtin_arr[] = {
     {"uid", builtin_uid, HELP_UID},
     {"gid", builtin_gid, HELP_GID},
     {"exit", builtin_exit, HELP_EXIT},
+    {"history", builtin_history, HELP_HISTORY},
     {NULL, NULL, NULL}
 };
 
