@@ -7,6 +7,7 @@
 #include <time.h>
 
 // LIBERAR MEMORIA
+// INCLUDES EN MINISH.H
 #include "minish.h"
 
 char permission_array[] = {'x', 'w', 'r'};
