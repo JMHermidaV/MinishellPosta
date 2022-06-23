@@ -1,21 +1,29 @@
 #include "minish.h"
-void bubblesort(char **arreglo) //Recibe una lista terminada en null
+void bubblesort(char arreglo[MAXLINE][MAXLINE], int length) //Recibe una lista terminada en null
 {
     // Útil para hacer intercambio de cadenas
-    char *temp;
+    
+    char temp[MAXLINE];
     int x, indiceActual;
-    for (x = 0; arreglo[x] != NULL; x++)
+    for (x = 0; x < length; x++)
     {
-        for (indiceActual = 0; arreglo[indiceActual + 1] != NULL;
+        
+        for (indiceActual = 0; indiceActual + 1 < length;
              indiceActual++)
         {
+            
             int indiceSiguienteElemento = indiceActual + 1;
             // Si la cadena es mayor que la siguiente (alfabeticamente) entonces intercambiamos
             if (strcmp(arreglo[indiceActual], arreglo[indiceSiguienteElemento]) > 0)
             {
+                strcpy(temp, arreglo[indiceActual]);
+                strcpy(arreglo[indiceActual], arreglo[indiceSiguienteElemento]);
+                strcpy(arreglo[indiceSiguienteElemento], temp);
+                /*
                 temp = strdup(arreglo[indiceActual]);
                 arreglo[indiceActual] = strdup(arreglo[indiceSiguienteElemento]);
                 arreglo[indiceSiguienteElemento] = temp;
+                */
 
             }
         }

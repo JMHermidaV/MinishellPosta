@@ -15,6 +15,7 @@
 #define HELP_UID     "uid - muestra nombre y número de usuario dueño del minish"
 
 int builtin_help(int argc, char **argv){
+
     int i = 0;
     bool command = false;
     if(argc == 2){
@@ -23,23 +24,24 @@ int builtin_help(int argc, char **argv){
             i++;
         }
         if(builtin_arr[i].cmd != NULL){
-            fprintf(stderr, "%s\n", builtin_arr[i].help_txt);
+            printf("%s\n", builtin_arr[i].help_txt);
         }
 
-        return 0;
+        return EXIT_SUCCESS;
     }
 
     else if(argc == 1 || command){
         // Si escribio solo command, o un comando inexistente, imprimomos todos los comandos:
         while(builtin_arr[i].cmd != NULL){
-            fprintf(stderr, "%s\n", builtin_arr[i].help_txt);
+            printf("%s\n", builtin_arr[i].help_txt);
             i++;
         }
 
-        if(argc == 1) return 0;
+        if(argc == 1) return EXIT_SUCCESS;
 
     }
 
-    return -1; 
+    fprintf(stderr, "ERROR, too many arguments for function 'help', type 'help help' for more info\n");
+    return EXIT_FAILURE; 
 
 }

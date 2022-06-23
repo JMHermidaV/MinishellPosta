@@ -1,11 +1,11 @@
-// LIBERAR MEMORIA
-// INCLUDES EN MINISH.H
+// LIBERAR MEMORIA (names, path_directory, absolute_path)
 #include "minish.h"
 
 char permission_array[] = {'x', 'w', 'r'};
 char permisos[] = {'-', '-', '-', '-', '-', '-', '-', '-', '-'};
 DIR *d;
 char *path_directory;
+char archivo[MAXLINE][MAXLINE];
 
 // Inprime los permisos del archivo
 void permissions(int n){
@@ -25,67 +25,72 @@ void permissions(int n){
 }
 
 
-int list(char *path, char *filter, char **names){
-    
+int list(char *path, char *filter){
     d = opendir(path);
     if(d){ // If is a directory:
         int n;
         for(n = 0; path[n] != '\0'; n++);
         if(path[n-1] != '/'){
-            path = realloc(path, sizeof(char)*(n+1));
+            //path = realloc(path, sizeof(char)*(n+1));
             path[n] = '/';
             path[n+1] = '\0';
         }
-        path_directory = path;
+        path_directory = strdup(path);
         struct dirent *dir;
         int i = 0;
         while((dir = readdir(d)) != NULL){
 
             if(filter == NULL){
                 if(dir->d_name[0] != '.'){
-                    names[i] = dir->d_name;
+                    strcpy(archivo[i], dir->d_name);
                     i++;
                 }
             }
             
             else{
                 if(dir->d_name[0] != '.' && strstr(dir->d_name, filter) != NULL){
-                    names[i] = dir->d_name;
+                    strcpy(archivo[i], dir->d_name);
                     i++;
                 }
             }
         }
-        names[i] = NULL;
+
+        return i; // cantidad de elementos en el array de nombres
     }
 
     else{
         return -1;
     }
-    return 0;
 }
 
 int builtin_dir(int argc, char **argv){
-    char **names;
-    names = malloc(sizeof(char *)*MAXLINE);
 
+    int length;
+    path_directory = malloc(sizeof(char)*PATH_MAX);
+    
     if(argc == 1){
-        if(list("./", NULL, names)){
-            return 1;
+        if((length = list("./", NULL)) == -1){
+            free(path_directory);
+            return EXIT_FAILURE;
         }
     }
 
     else if(argc == 2){
-        if(list(argv[1], NULL, names) != 0){ // Si devuelve error, argv[1] es un texto filtro:
-            if(list("./", argv[1], names) != 0){
-                return 1;
+
+        if((length = list(argv[1], NULL)) == -1 ){ // Si devuelve error, argv[1] es un texto filtro:
+            if((length = list("./", argv[1])) == -1){
+                free(path_directory);
+                fprintf(stderr, "ERROR: invalid directory %s, type 'help dir' for more info\n", argv[1]);
+                return EXIT_FAILURE;
             }
         }
     }
 
     else if(argc == 3){
-        if(list(argv[1], argv[2], names) != 0){
+        if((length = list(argv[1], argv[2])) == -1){
+            free(path_directory);
             fprintf(stderr, "ERROR: when two arguments passed, the firts one must be a path to a directory\n");
-            return 1;
+            return EXIT_FAILURE;
         }
     }
 
@@ -93,18 +98,23 @@ int builtin_dir(int argc, char **argv){
         fprintf(stderr, "ERROR: too many arguments, type 'help dir' for more info\n");
         return 1;
     }
-    bubblesort(names);
+
+    bubblesort(archivo, length);
+
     struct stat fs;
     int x;
-    char *absolute_path;
-    absolute_path = malloc(sizeof(char)*PATH_MAX);
-    absolute_path = strdup(path_directory);
-    char time[100];
-    for(int i = 0; names[i] != NULL; i++){
 
-        strcat(absolute_path, names[i]);
+    char absolute_path[MAXLINE];
+    strcpy(absolute_path, path_directory);
+    char time[100];
+
+    // Imprimimos los resultados:
+    for(int i = 0; i < length; i++){
+
+
+        strcat(absolute_path, archivo[i]);
         x = stat(absolute_path, &fs);
-        absolute_path = strdup(path_directory);
+        strcpy(absolute_path, path_directory);
         if(x == -1){
             return EXIT_FAILURE;
         }
@@ -114,6 +124,7 @@ int builtin_dir(int argc, char **argv){
         }else{
             printf("-");
         }
+
         permissions(fs.st_mode);
         
 
@@ -121,9 +132,11 @@ int builtin_dir(int argc, char **argv){
         printf("  %ld", fs.st_nlink);
         printf("  %15s  %15s  %6ld", getpwuid(fs.st_uid)->pw_name, getgrgid(fs.st_gid)->gr_name, fs.st_size);
         printf("  %s", time);
-        printf("  %s\n", names[i]);
+        printf("  %s\n", archivo[i]);
     }
 
+    
+    free(path_directory);
     return EXIT_SUCCESS;
 }
 

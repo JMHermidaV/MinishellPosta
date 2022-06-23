@@ -10,7 +10,7 @@
 int builtin_cd(int argc, char **argv){
     // cd [dir], si dir es NULL cambia al directorio de la variable HOME:
     char cwd[PATH_MAX];
-    int err = -1;
+    int err = 1;
     if(argc == 2){
         if(strcmp(argv[1], "-") == 0){
             // cd - retorna al directorio anterior
@@ -27,11 +27,12 @@ int builtin_cd(int argc, char **argv){
     }
 
     if(err != 0){
-        perror("cd error");
+        fprintf(stderr, "ERROR: no such file or directory '%s'\n", argv[1]);
+        return EXIT_FAILURE;
     }
 
     // Seteo la variable de ambiente PWD (process working directory)
     setenv("PWD", getcwd(cwd, sizeof(cwd)), 0);
 
-    return err;
+    return EXIT_SUCCESS;
 }

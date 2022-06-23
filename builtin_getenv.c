@@ -10,8 +10,8 @@ int builtin_getenv(int argc, char **argv){
     int i;
 
     if(argc <= 1){
-        fprintf(stderr, "%s\n", "ERROR: Not enough input arguments");
-        return -1; // Debe pasar al menos una variable de entorno
+        fprintf(stderr, "%s\n", "ERROR: Not enough input arguments, type 'help getenv' for more info");
+        return EXIT_FAILURE; // Debe pasar al menos una variable de entorno
     }
 
     for(i = 1; argv[i] != NULL; i++){
@@ -21,10 +21,10 @@ int builtin_getenv(int argc, char **argv){
             printf("%s: %s\n", argv[i], getenv(argv[i]));
         } // En error, retorna NULL:
         else{
-            fprintf(stderr, "BUILTIN_ GETENV ERROR: invalid variable name '%s'\n", argv[i]);
+            fprintf(stderr, "GETENV ERROR: invalid variable name for input '%s'\n", argv[i]);
             return EXIT_FAILURE;
         }
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
